@@ -20,7 +20,7 @@ class Goods extends \app\index\controller\Common
         $now_page=$_POST['pageNum'] ? (int)$_POST['pageNum'] : 1;
         $page_per=PAGEPERNUM;
         $goodsObj=Db::name('goods');
-        $goods_result=$goodsObj->where('status=0')->limit(($now_page-1)*$page_per,$page_per)->select();
+        $goods_result=$goodsObj->where('status=0')->limit(($now_page-1)*$page_per,$page_per)->order('id desc')->select();
         $totalcount=$goodsObj->where('status=0')->count();
         $this->assign('nowpage',$now_page); 
         $this->assign('total',$totalcount);  
