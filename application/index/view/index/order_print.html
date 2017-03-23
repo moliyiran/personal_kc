@@ -1,0 +1,146 @@
+{__NOLAYOUT__}
+<style>
+.table {
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+table {
+    max-width: 100%;
+    background-color: transparent;
+}
+
+table {
+    border-spacing: 0;
+    border-collapse: collapse;
+}
+
+* {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+table {
+    display: table;
+    border:1px;
+    border-collapse: separate;
+    border-spacing: 2px;
+    border-color: grey;
+}
+table{border-collapse:collapse;border:none;}
+td{border:solid grey 1px;}
+@page Section1 {
+size:8.27in 11.69in; 
+margin:.5in .5in .5in .5in; 
+mso-header-margin:.5in; 
+mso-footer-margin:.5in; 
+mso-paper-source:0;
+}
+div.Section1 {
+page:Section1;
+} 
+/**Sets width of the content**/
+.btn-toolbar.list-toolbar { width: 960px !important;}
+
+/**For 1st Table**/
+table:first-of-type thead:nth-child(1) {text-align:left;line-height: 24px;}
+legend {font-size: 38px; color: #2a860c;}
+
+/**For 2nd Table**/
+table:nth-of-type(2){position: relative;}
+table:nth-of-type(2) thead {border;border-top: 2px solid;border-bottom: 2px solid;line-height: 30px;}
+table:nth-of-type(2) thead th:nth-of-type(3){ text-align: left;}
+table:nth-of-type(2) td{border: none !important;}
+table:nth-of-type(2) tbody{font-weight: bold; }
+table:nth-of-type(2) tbody tr{line-height: 20px;}
+table:nth-of-type(2) tbody td:nth-of-type(3){text-align: left;}
+table:nth-of-type(2) tfoot{position: absolute; bottom: -8em; border-top: 2px solid; line-height: 24px; font-size: 18px;}
+table:nth-of-type(2) tbody tr:last-of-type{line-height: 30px;font-size: 18px; position: absolute;text-align: right;text-align:-webkit-right;width:100%;border-bottom: 2px solid;padding-right: 50px;}
+</style>
+<center>
+<form id="tab" method="post" action="/Index/index/deal_order" class="Section1">
+
+  <div class="btn-toolbar list-toolbar" style="width:595px;">
+      <div>
+    <table class="table">
+     <legend><b>UNITOP PURCHASE ORDER</b></legend> 
+     
+    <thead>
+    <tr>
+        <th>P.O.NO.:</th>
+        <th>{$info['BillNo']}</th>
+        <th>P.O.DATE:</th>
+        <th><?php echo date('Y-m-d',strtotime($info['DBill']));?></th>                 
+        <th>DELIVER UNTIL:</th>
+        <th><?php echo date('Y-m-d',strtotime($info['MainDPRec']));?></th>
+    </tr>
+    <tr>
+        <th>SUPPLIER:</th>
+        <th>{$info['AllName']}</th>
+        <th>TEL:</th>
+        <th>{$info['CTel1']}</th>                 
+        <th>SUPPLIER CODE:</th>
+        <th>{$info['SupID']}</th>
+    </tr>
+    <tr>
+        <th>BRANCH:</th>
+        <th>{$info['StockName']}</th>
+        <th>FAX:</th>
+        <th>{$info['CFax']}</th>                 
+        <th>AUDITOR:</th>
+        <th>{$info['MChk']}</th>
+    </tr>             
+    </thead>
+ 
+    </table>        
+<!--商品列表开始-->
+    <table class="table">
+    <thead>
+    <tr>
+        <th>SER</th>
+        <th>CODE</th>
+        <th>DESCRIPTION</th>
+        <th>REMARK</th>                 
+        <th>QTY</th>
+        <th>UNIT</th>
+        <th>PRICE</th>
+        <th>AMOUNT</th>
+    <!--    
+        <th>操作</th> 
+      <th style="width: 3.5em;"></th>      
+    -->
+    </tr>  
+    </thead>
+    <tbody>
+      
+    {$str}
+
+    </tbody> 
+     <tfoot>  
+    <tr ><td colspan="8"><b>
+Effective today, if delivery is not received within ten (10)days from the
+date of the purchase order, our computer  system  will automatically cancel 
+this P.O. and will  no  longer  accept  your delivery. For your guidance.
+Thank you for your cooperation.
+    </b></td></tr>
+        <tr ><td colspan="8"><b>
+即日起本公司軟體系統，將在10日之內未送訂單自動關閉、停止收貨敬請各位供應商配合
+    </b></td></tr>
+    </tfoot>
+     
+    </table>
+
+<!--商品列表结束-->  
+    </div>
+
+  </div>
+  <script>
+
+
+  window.onload = function() {window.print(); }
+
+  </script>
+</form>    
+</center>
+

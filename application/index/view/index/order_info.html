@@ -1,0 +1,122 @@
+
+<form id="tab" method="post" action="/Index/index/deal_order">
+
+<div class="row">
+  <div class="col-md-4">
+    <br>
+    <div id="myTabContent" class="tab-content">
+      <div class="tab-pane active in" id="home">
+
+
+         <div class="form-group">
+            <!--   
+            <button class="btn btn-default" class="tt_j">提交订单</button>
+            -->
+            <?php $md=$info['StockName'];//iconv('GB2312', 'utf-8//IGNORE', $info['StockName']);?>
+            <span style="color:#abcdef;">门店 :</span>&nbsp;<span><b class="je" style="font-size:18px;">{$md}</b></span>
+           
+        </div> 
+             
+         <div class="form-group">
+
+            <span style="color:#abcdef;">备注 :</span>&nbsp;<span><b class="je" style="font-size:18px;"><?php
+               // $st=stripslashes($info['MainNotes']); 
+                //$encode=mb_detect_encoding($info['MainNotes'],array("ASCII",'UTF-8',"GB2312","GBK",'BIG5'));
+                echo $info['MainNotes'];//.iconv('GBk', 'UTF-8', $info['MainNotes']);//mb_convert_encoding($info['MainNotes'], 'UTF-8', "gb2312");
+            ?></b></span>
+           
+        </div>
+
+        <div class="form-group">
+            <!--   
+            <button class="btn btn-default" class="tt_j">提交订单</button>
+            -->
+            <span style="color:#abcdef;">总金额:</span>&nbsp;<span><b class="je" style="font-size:18px;">{$info.MainAmtTPur}</b></span>
+           
+        </div>
+        <div class="form-group">
+           <span style="color:#abcdef;">创建时间:</span>&nbsp;<span><b class="je" style="font-size:18px;"><?php echo date('Y-m-d H:i:s',strtotime($info['DCreate']));?></b></span>          
+        </div>
+          <div style="display:none;">
+            <textarea name="bf_sp"></textarea>
+          </div>
+        
+      </div>
+
+
+    </div>
+
+  </div>
+</div>
+
+  <div class="btn-toolbar list-toolbar">
+      <div>
+<!--商品列表开始-->
+    <table class="table">
+    <thead>
+    <tr>
+        <th>货品ID</th>
+        <th>货品名</th>                
+        <th>数量</th>
+        <th>价格(单)</th>
+        <th>单位</th>
+    <!--    
+        <th>操作</th> 
+      <th style="width: 3.5em;"></th>      
+    -->
+    </tr>  
+    </thead>
+    <tbody>
+
+    {$str}
+    <!--        
+    <tr class="sp_list"><td colspan="7"></td></tr>
+    -->
+    </tbody>  
+    </table>
+
+<!--商品列表结束-->  
+    </div>
+          <div style="display:none;">
+          <button class="btn btn-primary"><i class="fa fa-save"></i> Save</button>
+          <a href="#myModal" data-toggle="modal" class="btn btn-danger" id='dv'>Delete</a>
+          </div>
+  </div>
+</form>    
+<style>
+.modal.small .modal-dialog{width:750px;height:360px;}
+.modal-dialog ul li{width:200px;float:left;height:30px;line-height:30px;list-style:none;}
+.modal-dialog ul li input[type='checkbox']{margin: 0px 5px 0 0 ;vertical-align:middle;}
+</style>    
+<div class="modal small fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+     <form >
+    <div class="modal-content">
+      
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h3 id="myModalLabel">select products</h3>
+      </div>
+      <div class="modal-body" style="height:360px;overflow-y:auto;">
+       
+        <ul class="pro">
+
+          <!--
+          <?php for($i=0;$i<100;$i++){?>
+          <li>
+            <input type="checkbox" value="aaaaa{$i}_{$i}"/><label>gggfi sdff sfdsaf ffeed vvv</label>
+          </li>
+          <?php }?>
+          -->       
+        </ul>
+        
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-default" data-dismiss="modal" aria-hidden="true">取消</button>
+        <button class="btn btn-danger" data-dismiss="modal" onclick="add_goods_list();">确定</button>
+      </div>
+   
+    </div>
+  </form>
+  </div>
+</div>

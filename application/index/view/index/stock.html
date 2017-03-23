@@ -1,0 +1,83 @@
+<div class="btn-toolbar list-toolbar">
+  <!-- 
+    <button class="btn btn-primary"><i class="fa fa-plus"></i> New User</button>
+   
+    <button class="btn btn-default">Import</button>
+    <button class="btn btn-default">Export</button>
+  -->
+  <div class="btn-group">
+    <form action=''>
+    <!--<input type='text' name="stock" value="{$stock}" placeholder='门店名'>-->
+    <select name="stock">
+      <option value="">--选择门店--</option>
+      {volist name="stock_list" id="s_data"}
+      <?php if('Sever'==$s_data['StockName']){?>
+
+      <?php }else{?>
+      <option value="{$s_data['StockID']}"<?php if($stock==$s_data['StockID']){?>selected<?php }?>>{$s_data['StockName']}</option>
+      <?php }?>
+      {/volist}
+    </select>
+    <!--
+    <select name="stock" class="prod">
+    </select> 
+    -->   
+    
+    <input type='text' name="pro" value="{$pro}" placeholder='货品id'>
+ 
+    <input type="submit" value="点击搜索">
+  </form>
+  </div>
+</div>
+<table class="table">
+  <thead>
+    <tr>
+
+      <th>货品ID</th>
+      <th>货品名</th>                
+      <th>在途库存</th>
+      <th>实际库存</th>
+      <th>单位</th> 
+      <th style="width: 3.5em;">---</th>
+    </tr>
+  </thead>
+  <tbody>
+    {$str}
+
+  </tbody>
+</table>
+<ul class="pagination">
+  {$page_str}
+
+</ul>
+<!--
+<ul class="pagination">
+  <li><a href="/Index/index/stock?stock={$stock}&page=<?php if($page-1>1) $n_page=$page-1;else $n_page=1;echo $n_page;?>">上一页</a></li>
+  <li><a href="/Index/index/stock?stock={$stock}&page=<?php echo $page+1;?>">下一页</a></li>
+
+</ul>
+-->
+<script>
+$(function(){
+  /*
+  $("select[name='stock']").change(function(){
+    console.log($(this).val());
+    console.log('aa');
+    if($(this).val()==''){
+
+    }else{
+      product_id($(this).val())
+    }
+  })
+*/
+})
+function product_id(stock_id){
+  var url="/Index/index/productBySid";
+  $.post(url,{"stock_id":stock_id},function(content){
+      if(content){
+        $('.prod').html(content);
+        //window.location.href='/index.php?controller=site&action=index&area_id='+area_val;
+      }
+  });  
+}
+</script>

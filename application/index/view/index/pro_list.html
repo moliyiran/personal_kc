@@ -1,0 +1,89 @@
+  <script>
+  function add_goods_list(){
+    var mycars=new Array()
+     var new_val=''
+     var n_str=''
+     var bf_str='';
+     $("tbody").html('<tr class="sp_list"><td colspan="7"></td></tr>')
+     $("input[type='checkbox']").each(function(){
+        if($(this).hasClass('all')){
+
+        }else{
+           if($(this).is(':checked')){
+            new_val=$(this).val().split("_")
+            if(!new_val[2])
+              new_val=0;
+            var tott=0;//parseFloat(new_val[2]);
+              n_str='<tr class="pr_'+new_val[1]+'"><td>'+new_val[1]+'<input type="hidden" name="pro['+new_val[1]+']" value="'+new_val[1]+'"></td><td>'+new_val[0]+'</td><td><input type="text" name="num['+new_val[1]+']" value="0" onChange="info(this,1,'+new_val[1]+')"></td><td><input type="text" name="unit['+new_val[1]+']" value="'+new_val[2]+'" onChange="info(this,2,'+new_val[1]+')"></td><td><input class="tot" type="text" name="total['+new_val[1]+']" value="'+tott+'" disabled></td><td> <a onclick="p_del('+new_val[1]+')"><i class="fa fa-trash-o"></i></a></td></tr>'
+              $(".sp_list").after(n_str);
+              mycars.push(new_val[1])
+          }         
+        }
+
+    });
+    if(mycars.length>0){
+      bf_str=mycars.join(",")
+      parent.bf_sp(bf_str);
+    }   
+  }
+  function info(_this,type,id){
+
+
+    var f='';
+    var e='';
+
+    if(type==1){
+
+      if(isNaN($(_this).val())){
+        $(_this).val(1)
+
+      }
+      f=parseInt($(_this).val())
+
+      $(_this).val(f)
+
+      e=parseFloat($("input[name='unit["+id+"]']").val())
+
+      e*=1000;
+        
+    }else{
+      if(isNaN($(_this).val())){
+        $(_this).val(1)
+
+      }     
+      e=parseFloat($(_this).val())
+
+      $(_this).val(e)
+
+      f=parseInt($("input[name='num["+id+"]']").val())
+
+      f*=1000;
+        
+    }
+
+
+    var new_pa=parseFloat((e*f)/1000)
+
+    $("input[name='total["+id+"]']").val(new_pa)
+    parent.zje();
+
+  }
+  function p_del(_id){
+    $(".pr_"+_id).remove();
+    parent.zje()
+  }
+  $(function(){  
+    $(".all").click(function(){
+      if($(this).is(':checked')){
+        $("input[type='checkbox']").prop("checked","checked");
+      }else{
+         $("input[type='checkbox']").prop("checked",false);
+      }
+    })
+  })  
+  </script>
+  <li style="width:100%;"><label><input type="checkbox" class="all">全选/返选</label></li>
+  {volist name="n_list" id="data"}
+  <li><label><input type="checkbox" name="prod" value="{$data.CommName}_{$data.CommID}_{$data.PTRefPur}" <?php if(in_array($data['CommID'], $ex_arr)){?>checked<?php }?>>
+    <span>{$data['CommName']}</span></label></li>
+  {/volist}

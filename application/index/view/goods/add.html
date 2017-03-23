@@ -1,0 +1,65 @@
+
+<div class="pageContent">
+	<form method="post" action="/Index/goods/add" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone);">
+		<div class="pageFormContent" layoutH="56">
+			<p>
+				<label>条码(barcode)：</label>
+				<input class="digits" name="barcode" type="text" size="30" value="<?php echo time().substr(microtime(),-3,3);?>" />
+			</p>
+			<p>
+				<label>商品名(中)(name(cn))：</label>
+				<input name="name" class="required" type="text" size="30" value="" alt="请输入商品中文名称"/>
+			</p>
+			<p>
+				<label>商品名(英)(name(en))：</label>
+				<input name="name_en" class="required" type="text" size="30" value="" alt="请输入商品英文名称"/>
+			</p>			
+			<p>
+				<label>商品编码(goods No.)：</label>
+				<input name="goods_No" class="required" type="text" size="30" value="" alt="请输入商品编码"/>	
+			</p>
+			<p>
+				<label>转换率(spec)：</label>
+				<input name="spec" class="required" type="text" size="30" value="" alt="请输入商品大小单位转换率"/>
+			</p>
+			<p>
+				<label>体积(volume)cm³：</label>
+				<input name="volume" class="required" type="text" size="30" alt="volume"/>
+			</p>
+			<p>
+				<label>所属分类(category)：</label>
+				<select name="cate" class="required combox">
+					{volist name="cate_result" id="vo"}
+					<option value="{$vo.id}">{$vo.name}</option>
+					{/volist}	
+				</select>
+			</p>
+			<p>
+				<label>小单位(tiny unit)：</label>
+				<select name="unit_tiny" class="required combox">
+					{volist name="unit_result" id="vo"}
+					<option value="{$vo.id}">{$vo.name}</option>
+					{/volist}	
+				</select>
+			</p>
+			<p>
+				<label>大单位(big unit)：</label>
+				<select name="unit_big" class="required combox">
+					{volist name="unit_result" id="vo"}
+					<option value="{$vo.id}">{$vo.name}</option>
+					{/volist}	
+				</select>
+			</p>			
+
+		</div>
+		<div class="formBar">
+			<ul>
+				<!--<li><a class="buttonActive" href="javascript:;"><span>保存</span></a></li>-->
+				<li><div class="buttonActive"><div class="buttonContent"><button type="submit">保存</button></div></div></li>
+				<li>
+					<div class="button"><div class="buttonContent"><button type="button" class="close">取消</button></div></div>
+				</li>
+			</ul>
+		</div>
+	</form>
+</div>

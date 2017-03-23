@@ -1,0 +1,66 @@
+<div class="btn-toolbar list-toolbar">
+  <!-- 
+    <button class="btn btn-primary"><i class="fa fa-plus"></i> New User</button>
+   
+    <button class="btn btn-default">Import</button>
+    <button class="btn btn-default">Export</button>
+  
+  <div class="btn-group">
+    <form action=''>
+
+    <input type="submit" value="点击搜索">
+  </form>
+  </div>
+  -->
+</div>
+<table class="table">
+  <thead>
+    <tr>
+      <!--<th>Id</th>
+      <th>订单id</th>-->
+      <th>订单编号</th>  
+      <th>所属门店</th>                
+      <th>明细总数</th>
+      <th>订单总额</th>
+      <th>供应商</th> 
+      <th>时间</th>
+      <th style="width: 3.5em;"></th>
+    </tr>
+  </thead>
+  <tbody>
+    {volist name="list" id="data"}
+    <tr>
+
+      <!--<td>{$data.BillNoID}</td>-->
+      <td>{$data.BillNo}</td>
+      <td>{$data.StockName}</td>
+      <td>{$data.RecordCnt}</td>
+      <td>{$data.MainAmtTPur}</td>
+      <td>{$data.AllName}</td>
+      <td><?php echo date('Y-m-d H:i:s',strtotime($data['DCreate']));?></td>
+
+      <td>
+        <a href="/Index/index/order_print/oid/{$data.BillNoID}" target="_blank">打印</a>|
+        <a href="/Index/index/order_info/oid/{$data.BillNoID}" target="_blank">查看</a>
+        <!--
+          <a href="user.html"><i class="fa fa-pencil"></i></a>
+          <a href="#myModal" role="button" data-toggle="modal"><i class="fa fa-trash-o"></i></a>
+        -->
+      </td>
+    </tr>
+    {/volist}
+  </tbody>
+</table>
+
+<ul class="pagination">
+  {$page_str}
+  <!--
+  <li><a href="#">&laquo;</a></li>
+  <li><a href="#">1</a></li>
+  <li><a href="#">2</a></li>
+  <li><a href="#">3</a></li>
+  <li><a href="#">4</a></li>
+  <li><a href="#">5</a></li>
+  <li><a href="#">&raquo;</a></li>
+  -->
+</ul>

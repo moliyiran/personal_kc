@@ -1,0 +1,175 @@
+
+<form id="tab" method="post" action="/Index/index/deal_order">
+
+<div class="row">
+  <div class="col-md-4">
+    <br>
+    <div id="myTabContent" class="tab-content">
+      <div class="tab-pane active in" id="home">
+
+        <div class="form-group">
+            <select name="stock" id="DropDownTimezone" class="form-control">
+              <option value="">门店</option>
+              {volist name="stock_list" id="data"}
+              <?php $n_name=iconv("GBK", "UTF-8",$data['StockName']);
+                    if(!in_array($data['stockid'],array('001','41','882','883','884','888','8888','9999'))){
+              ?>
+              <option value="{$data.stockid}">{$n_name}</option>
+              <?php }?>
+              {/volist}
+            </select>
+          </div>
+        <div class="form-group">
+            <a class="btn jx">继续添加</a>
+        
+        </div>
+        
+        <div class="form-group">
+            <textarea name="beizu" placeholder="添加订单备注"  class="form-control" rows="3"></textarea>
+            <input type="hidden" name="sum_total" value="0">
+            <input type="hidden" name="stock_name" value="">    
+        </div>
+              
+        <div class="form-group">
+            <button class="btn btn-default" class="tt_j">提交订单</button>
+            <span style="color:#abcdef;">总金额:</span>&nbsp;<span><b class="je" style="font-size:24px;">0</b></span>
+        </div>
+
+          <div style="display:none;">
+            <textarea name="bf_sp"></textarea>
+          </div>
+        
+      </div>
+
+
+    </div>
+
+  </div>
+</div>
+
+    <div class="btn-toolbar list-toolbar">
+      <div>
+<!--商品列表开始-->
+    <table class="table">
+  <thead>
+    <tr>
+        <th>货品ID</th>
+        <th>货品名</th>                
+        <th>数量</th>
+        <th>价格(单)</th>
+        <th>小计</th>
+        <th>操作</th> 
+      <th style="width: 3.5em;"></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr class="sp_list"><td colspan="7"></td></tr>
+  <script>
+
+  function zje(){
+    var num=0;
+    $(".tot").each(function(){
+      num+=parseFloat($(this).val())
+    })
+    $(".je").html(num)
+    $("input[name='sum_total']").val(num)    
+  }
+  function bf_sp(string){
+    $("textarea[name='bf_sp']").val(string);
+  }
+
+  $(function(){
+    $("#tab").submit(function(){
+      $("input[name='stock_name']").val($("select[name='stock']").find("option:selected").text());
+      if(parseFloat($("input[name='sum_total']").val())<=0||$("select[name='stock']").val()==''){
+        return false;
+      }
+    })
+    $("select[name='stock']").change(function(){
+      $(".pro").html('<li style="width:80%;"><h1>商品数据加载中,请耐心等待...</h1></li>')
+      $("#dv").click()
+
+      if($(this).val()!=''){
+         $.post("/Index/index/pro_list/stock_id/"+$(this).val(),{suggest:'aa'},function(result){
+            if(result){
+              $(".pro").html(result);
+            }else{
+              $(".pro").html('<li style="width:80%;"><h1>没有对应的商品数据...</h1></li>');
+            }
+          });          
+      }
+    })
+    $(".jx").click(function(){
+      $(".pro").html('<li style="width:80%;"><h1>商品数据加载中,请耐心等待...</h1></li>')
+      $("#dv").click()
+      if($("select[name='stock']").val()!=''){
+          $.post("/Index/index/pro_list/stock_id/"+$("select[name='stock']").val(),{data:$("textarea[name='bf_sp']").val()},function(result){
+            if(result){
+              $(".pro").html(result);
+            }else{
+              $(".pro").html('<li style="width:80%;"><h1>没有对应的商品数据...</h1></li>');
+            }
+          });          
+      }
+    })
+  })
+
+  function add_goods_list(){
+     var new_val=''
+     $("input[type='checkbox']").each(function(){
+        if($(this).is(':checked')){
+          new_val=$(this).val().split("_")
+        }
+    });   
+  }  
+  </script>
+
+  </tbody>
+  
+</table>
+
+<!--商品列表结束-->  
+      </div>
+          <div style="display:none;">
+          <button class="btn btn-primary"><i class="fa fa-save"></i> Save</button>
+          <a href="#myModal" data-toggle="modal" class="btn btn-danger" id='dv'>Delete</a>
+          </div>
+    </div>
+</form>    
+<style>
+.modal.small .modal-dialog{width:750px;height:360px;}
+.modal-dialog ul li{width:260px;float:left;height:30px;line-height:30px;list-style:none;}
+.modal-dialog ul li input[type='checkbox']{margin: 0px 5px 0 0 ;vertical-align:middle;}
+</style>    
+<div class="modal small fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+     <form >
+    <div class="modal-content">
+      
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h3 id="myModalLabel">select products</h3>
+      </div>
+      <div class="modal-body" style="height:360px;overflow-y:auto;">
+       
+        <ul class="pro">
+
+          <!--
+          <?php for($i=0;$i<100;$i++){?>
+          <li>
+            <input type="checkbox" value="aaaaa{$i}_{$i}"/><label>gggfi sdff sfdsaf ffeed vvv</label>
+          </li>
+          <?php }?>
+          -->       
+        </ul>
+        
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-default" data-dismiss="modal" aria-hidden="true">取消</button>
+        <button class="btn btn-danger" data-dismiss="modal" onclick="add_goods_list();">确定</button>
+      </div>
+   
+    </div>
+  </form>
+  </div>
+</div>
