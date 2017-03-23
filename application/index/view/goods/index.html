@@ -48,7 +48,7 @@
 <div class="pageContent">
 	<div class="panelBar">
 		<ul class="toolBar">
-			<li><a class="add" href="/index/seller/add" target="dialog"><span>添加</span></a></li>
+			<li><a class="add" href="/index/goods/add" target="dialog"><span>添加</span></a></li>
 			<li><a class="delete" href="demo/common/ajaxDone.html?uid={sid_user}" target="ajaxTodo" title="确定要删除吗?"><span>删除</span></a></li>
 			<li><a class="edit" href="demo_page4.html?uid={sid_user}" target="navTab"><span>修改</span></a></li>
 			<li class="line">line</li>
@@ -67,6 +67,7 @@
 				<th width="80" align="center">大单位(big)</th>
 				<th width="80">转换率(switch fee)</th>
 				<th width="80">类别(category)</th>
+				<th width="80">供应商</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -81,6 +82,7 @@
 				<td>{$vo.unit_big}</td>
 				<td>{$vo.spec}</td>
 				<td>{$vo.cate}</td>
+				<td>{$vo.seller}</td>
 			</tr>
 			{/volist}	
 		</tbody>

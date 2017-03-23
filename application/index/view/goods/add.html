@@ -35,6 +35,14 @@
 				</select>
 			</p>
 			<p>
+				<label>供应商：</label>
+				<select name="seller" class="required combox">
+					{volist name="seller_result" id="vo"}
+					<option value="{$vo.id}">{$vo.name}</option>
+					{/volist}	
+				</select>
+			</p>			
+			<p>
 				<label>小单位(tiny unit)：</label>
 				<select name="unit_tiny" class="required combox">
 					{volist name="unit_result" id="vo"}

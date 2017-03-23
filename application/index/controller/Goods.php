@@ -46,6 +46,7 @@ class Goods extends \app\index\controller\Common
             $data['barcode']=$request_data['barcode'];
             $data['goods_No']=$request_data['goods_No'];
             $data['cate']=$request_data['cate'];
+            $data['seller']=(int)$request_data['seller'];
             $exe_result=$cate_result=Db::name('goods')->insert($data);
             if($exe_result){
                 suc();
@@ -53,12 +54,15 @@ class Goods extends \app\index\controller\Common
                 err();
             }
         }else{
+            $seller_result=Db::name('seller')->where('status=0')->order('id desc')->select();
              $cate_result=Db::name('category')->where('del=0')->select();
             if($cate_result){
                 $cate_result=sortdata($cate_result);
                 $this->assign('cate_result',$cate_result);  
             }
             $unit_result=Db::name('unit')->where('del=0')->select();
+
+            $this->assign('seller_result',$seller_result);  
 
             $this->assign('unit_result',$unit_result);  
                        
