@@ -49,6 +49,7 @@ class Seller extends \app\index\controller\Common
             $data['address']=$request_data['address'] ? addslashes($request_data['address']) : '';
             $data['tel']=$request_data['tel'];
             $data['email']=$request_data['email'];
+            $data['type']=(int)$request_data['type'];
             $exe_result=$cate_result=Db::name('seller')->insert($data);
             if($exe_result){
                 suc();
@@ -72,6 +73,7 @@ class Seller extends \app\index\controller\Common
             $data['address']=$request_data['address'] ? addslashes($request_data['address']) : '';
             $data['tel']=$request_data['tel'];
             $data['email']=$request_data['email'];
+            $data['type']=(int)$request_data['type'];
             $sellerObj=Db::name('seller');
             if($find_result=$sellerObj->where('name="'.$data['name'].'" and id !='.$id)->find()){
             	err();

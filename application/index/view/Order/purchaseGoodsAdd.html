@@ -1,0 +1,81 @@
+<form id="pagerForm" method="post" action="/Index/order/purchaseGoodsAdd" onsubmit="return dwzSearch(this, 'dialog');">
+<!--	
+	<input type="hidden" name="status" value="${param.status}">
+	<input type="hidden" name="keywords" value="${param.keywords}" />
+	<input type="hidden" name="pageNum" value="1" />
+	<input type="hidden" name="numPerPage" value="${model.numPerPage}" />
+	<input type="hidden" name="orderField" value="${param.orderField}" />
+-->
+	<input type="hidden" name="goods_name" value="{$goods_name}">
+	<input type="hidden" name="seller" value="{$seller_id}" />
+	<input type="hidden" name="pageNum" value="1" />
+	<input type="hidden" name="numPerPage" value="1" />
+</form>
+
+
+<div class="pageHeader">
+	<form onsubmit="return dwzSearch(this, 'dialog');" action="/Index/order/purchaseGoodsAdd" method="post" >
+	<div class="searchBar">
+		
+		<table class="searchContent">
+			<tr>
+				<td>
+					商品名称：<input type="text" name="goods_name" value="{$goods_name}"/>
+				</td>
+				<td>
+					<select class="combox" name="seller">
+						<option value="0">--供应商--</option>
+						{volist name="seller" id="vo"}
+						<option value="{$vo.id}" {if condition="$vo.id==$seller_id"}selected{/if}>{$vo.name}</option>
+						{/volist}
+					</select>
+				</td>
+
+			</tr>
+		</table>
+		<div class="subBar">
+			<ul>
+				<li><div class="buttonActive"><div class="buttonContent"><button type="submit">检索</button></div></div></li>
+			</ul>
+		</div>
+	
+	</div>
+	</form>
+</div>
+<div class="pageContent">
+
+	<table class="table" width="100%" layoutH="138">
+		<thead>
+			<tr>
+				<th width="120">商品条码(barcode)</th>
+				<th width="120">商品编号(No.)</th>
+				<th>商品名(中)</th>
+				<th>商品名(英)</th>
+				<th width="80">类别(category)</th>
+				<th width="80">供应商</th>
+			</tr>
+		</thead>
+		<tbody>
+			{volist name="result" id="vo"}
+			<?php $m_type=0==$vo['btype'] ? 'RMB' : 'PHP';?>
+			<tr target="sid_user" onclick="$.bringBack({goods_id:'{$vo.id}',sid:'{$vo.seller}',name:'{$vo.name}',seller:'{$vo.bname}',show_type:'{$m_type}',type:'{$vo.btype}',goods_No:'{$vo.goods_No}',switch_num:'{$vo.spec}',tiny:'{$vo.uname}',big:'{$vo.u2name}'})">
+				<td>{$vo.barcode}</td>
+				<td>{$vo.goods_No}</td>
+				<td>{$vo.name}</td>
+				<td>{$vo.name_en}</td>
+				<td>{$vo.cate}</td>
+				<td>{$vo.bname}</td>
+			</tr>
+			{/volist}	
+		</tbody>
+	</table>
+	<div class="panelBar">
+		<div class="pages">
+
+			<span>共{$total}条</span>
+		</div>
+
+		<div class="pagination" targetType="dialog" totalCount="{$total}" numPerPage="<?php echo PAGEPERNUM;?>" pageNumShown="10" currentPage="{$nowpage}"></div>
+
+	</div>
+</div>

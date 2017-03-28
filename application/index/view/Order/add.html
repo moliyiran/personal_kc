@@ -1,0 +1,159 @@
+<!--
+<form id="pagerForm" method="post" action="/Index/order/purchaseGoodsAdd">
+	
+	<input type="hidden" name="status" value="${param.status}">
+	<input type="hidden" name="keywords" value="${param.keywords}" />
+	<input type="hidden" name="pageNum" value="1" />
+	<input type="hidden" name="numPerPage" value="${model.numPerPage}" />
+	<input type="hidden" name="orderField" value="${param.orderField}" />
+
+
+	<input type="hidden" name="pageNum" value="1" />
+	<input type="hidden" name="numPerPage" value="1" />
+</form>
+-->
+
+<div class="pageHeader">
+	<form onsubmit="return navTabSearch(this);" action="demo_page1.html" method="post">
+	<div class="searchBar">
+	<!--	
+		<table class="searchContent">
+			<tr>
+				<td>
+					我的客户：<input type="text" name="keyword" />
+				</td>
+				<td>
+					<select class="combox" name="province">
+						<option value="">所有省市</option>
+						<option value="北京">北京</option>
+						<option value="上海">上海</option>
+						<option value="天津">天津</option>
+						<option value="重庆">重庆</option>
+						<option value="广东">广东</option>
+					</select>
+				</td>
+				<td>
+					建档日期：<input type="text" class="date" readonly="true" />
+				</td>
+			</tr>
+		</table>
+		<div class="subBar">
+			<ul>
+				<li><div class="buttonActive"><div class="buttonContent"><button type="submit">检索</button></div></div></li>
+				<li><a class="button" href="demo_page6.html" target="dialog" mask="true" title="查询框"><span>高级检索</span></a></li>
+			</ul>
+		</div>
+	-->
+	</div>
+	</form>
+</div>
+<form  class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone);"  method="post" action="/Index/order/add">
+<div class="pageContent" style="overflow: auto; width: 100%;">
+	<div class="panelBar">
+		<ul class="toolBar">
+		<li><a href="javascript:void(0;)"><button type="submit">提交订单</button></a></li>		
+		<!--	
+			<li><a class="delete" href="demo/common/ajaxDone.html?uid={sid_user}" target="ajaxTodo" title="确定要删除吗?"><span>删除</span></a></li>
+			<li><a class="edit" href="demo_page4.html?uid={sid_user}" target="navTab"><span>修改</span></a></li>
+			<li class="line">line</li>
+			<li><a class="icon" href="demo/common/dwz-team.xls" target="dwzExport" targetType="navTab" title="实要导出这些记录吗?"><span>导出EXCEL</span></a></li>
+		-->
+		</ul>
+	</div>
+	<table class="table" width="100%" layoutH="138">
+		<thead>
+			<tr>
+				<th style="width:15%;"><center>商品编号</center></th>
+				<th><center>采购商品</center></th>
+				<th><center>币种</center></th>
+				<th><center>采购价(小)</center></th>
+				<th><center>采购数量(大)</center></th>
+				<th><center>转换率</center></th>
+				<th><center>供应商</center></th>
+				<th><center>采购类型</center></th>
+				<th><center>操作</center></th>
+			</tr>
+		</thead>
+		<tbody>
+
+			<tr>
+				<td>
+				<input type="hidden" name="goods[0].goods_id">
+				<input type="hidden" name="goods[0].sid">	
+				<input type="text" name="goods[0].goods_No" readonly/>
+				
+				<a class="btnLook" href="/index/Order/purchaseGoodsAdd" lookupGroup="goods[0]">查找带回</a></td>
+				<td><input type="text" name="goods[0].name" readonly/></td>
+				<td><input type="hidden" name="goods[0].type"/><input type="text" name="goods[0].show_type" readonly/></td>
+				<td><input type="text" name="goods[0].price" class="number" value="0.00" style="width:40px;"/>/<input type="text" readonly name="goods[0].tiny" style="width:32px;"></td>
+				<td><input type="text" name="goods[0].num" class="number" value="0" style="width:32px;"/><input type="text" readonly name="goods[0].big" style="width:32px;"></td>
+				<td><input type="text" name="goods[0].switch_num" class="number" value="0" readonly/></td>
+				<td><input type="text" name="goods[0].seller" value="0" readonly/></td>
+				<td><select name="goods[0]['type']">
+					<option value="0">正常采购</option>
+					<option value="1">赠送</option>
+					</select>
+				</td>
+				<td><a href="javascript:void(0)" onclick="chan_i()"><span>确定选择</span></a>
+				</td>
+			</tr>
+			<tr><td colspan="9"><hr></td></tr>
+			<tr class="bottom_div" style="display:none;"><td colspan="8"></td></tr>
+		</tbody>
+	</table>
+
+	<div class="panelBar" style="display:none;">
+		<div class="pages">
+
+			<span>共{$total}条</span>
+		</div>
+
+		<div class="pagination" targetType="navTab" totalCount="{$total}" numPerPage="<?php echo PAGEPERNUM;?>" pageNumShown="10" currentPage="{$nowpage}"></div>
+
+	</div>
+</div>
+</form>
+<script>
+var i=0;
+$(function(){
+
+})
+function chan_i(){
+	i++
+	str='<tr target="sid_user" class="sort_'+i+'">'
+				+'<td>'
+				+'<input type="hidden" name="goods_id['+i+']" value="'+$("input[name='goods[0].goods_id']").val()+'">'
+				+'<input type="hidden" name="sid['+i+']" value="'+parseInt($("input[name='goods[0].sid']").val())+'">'+	
+				'<input type="text" name="goods_No['+i+']" readonly value="'+$("input[name='goods[0].goods_No']").val()+'"/>'+
+				'</td>'+
+				'<td><input type="text" name="name['+i+']" readonly value="'+$("input[name='goods[0].name']").val()+'"/></td>'+
+				'<td><input type="hidden" name="type['+i+']"  readonly value="'+$("input[name='goods[0].type']").val()+'"/>'+
+				'<input type="text" name="show_type['+i+']" readonly value="'+$("input[name='goods[0].show_type']").val()+'"/></td>'+
+				'<td><input type="text" name="price['+i+']" class="number" value="'+$("input[name='goods[0].price']").val()+'" style="width:40px;"/><span>/'+$("input[name='goods[0].tiny']").val()+'</span></td>'+
+				'<td><input type="text" name="num['+i+']" class="number"  value="'+$("input[name='goods[0].num']").val()+'" style="width:40px;"/><span>'+$("input[name='goods[0].big']").val()+'</span></td>'+
+				'<td><input type="text" name="switch_num['+i+']"  readonly  value="'+$("input[name='goods[0].switch_num']").val()+'" style="width:40px;"/><span>'+$("input[name='goods[0].tiny']").val()+'/'+$("input[name='goods[0].big']").val()+'</span></td>'+				
+				'<td><input type="text" name="seller['+i+']"  readonly  value="'+$("input[name='goods[0].seller']").val()+'"/></td>'+
+				'<td><select name="buy_type['+i+']">'+
+					'<option value="0">正常采购</option>'+
+					'<option value="1">赠送</option>'+
+					'</select>'+
+				'</td>'+
+				'<td><a href="javascript:void(0);" onclick="rem('+i+')"><span>移除</span></a>'+
+				'</td>'+
+			'</tr>';
+			//console.log(str);return;
+	$(".bottom_div").after(str);		
+}
+function rem(r){
+	$(".sort_"+r).remove();
+}
+
+function switch_money_type(_this){
+	console.log('aa')
+	if(0==parseInt($(_this).val())){
+		$(_this).next('b').html('RMB');
+	}else{
+		$(_this).next('b').html('PHP');
+	}
+}
+</script>

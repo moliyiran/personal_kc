@@ -1,0 +1,119 @@
+<form id="pagerForm" method="post" action="demo_page1.html">
+	<input type="hidden" name="status" value="${param.status}">
+	<input type="hidden" name="keywords" value="${param.keywords}" />
+	<input type="hidden" name="pageNum" value="1" />
+	<input type="hidden" name="numPerPage" value="${model.numPerPage}" />
+	<input type="hidden" name="orderField" value="${param.orderField}" />
+</form>
+
+
+<div class="pageHeader">
+	<form onsubmit="return navTabSearch(this);" action="demo_page1.html" method="post">
+	<div class="searchBar">
+		<!--<ul class="searchContent">
+			<li>
+				<label>我的客户：</label>
+				<input type="text"/>
+			</li>
+			<li>
+			<select class="combox" name="province">
+				<option value="">所有省市</option>
+				<option value="北京">北京</option>
+				<option value="上海">上海</option>
+				<option value="天津">天津</option>
+				<option value="重庆">重庆</option>
+				<option value="广东">广东</option>
+			</select>
+			</li>
+		</ul>
+		-->
+		<table class="searchContent">
+			<tr>
+				<td>
+					订单编号：<input type="text" value="{$order.order_No}" readonly/>
+				</td>
+				<td>
+					生成时间：<input type="text" value="<?php echo date('Y-m-d H:i:s',$order['create_time']);?>" readonly/>
+				</td>
+
+			</tr>
+		</table>
+	</div>
+	</form>
+</div>
+<div class="pageContent">
+	<table class="table" width="100%" layoutH="138">
+		<tbody>
+			<tr target="sid_user" rel="1">
+				<td>商品编号</td>
+				<td>商品名</td>
+				<td>单价</td>
+				<td>币种</td>
+				<td>购买类型</td>
+				<td>转换率</td>
+				<td>商品数量</td>
+			</tr>
+			{volist name="order_goods" id="vo"}
+			<tr target="sid_user">
+				<td>{$vo.goods_No}</td>
+				<td>{$vo.gname}</td>
+				<td>{$vo.per_fee}(小)-<?php echo ($vo['per_fee']*$vo['spec']).'(大)';?></td>
+				<td>
+				{if condition="$vo['currency_type'] == '0'"}
+				RMB
+				{else /}
+				PHP
+				{/if}
+				</td>
+				<td>
+				{if condition="$vo['buy_type'] == '0'"}
+				正常购买
+				{else /}
+				赠送
+				{/if}
+				</td>
+				<td>{$vo.spec}</td>
+				<td>{$vo.num}</td>
+			</tr>
+			{/volist}
+			<tr target="sid_user" rel="2">
+				<td colspan="7"></td>
+			</tr>			
+			<tr target="sid_user" rel="2">
+				<td>--</td>
+				<td>--</td>
+				<td>商家</td>
+				<td>费用(PHP)</td>
+				<td>费用(RMB)</td>
+				<td>已支付(PHP)</td>
+				<td>已支付(RMB)</td>
+			</tr>
+			{volist name="order_seller" id="vo"}
+			<tr target="sid_user">
+				<td>--</td>
+				<td>--</td>
+				<td>{$vo.sname}</td>
+				<td>{$vo.php_order_amount}</td>
+				<td>{$vo.rmb_order_amount}</td>
+				<td>{$vo.php_paid_amount}</td>
+				<td>{$vo.rmb_paid_amount}</td>
+			</tr>
+			{/volist}			
+		</tbody>
+	</table>
+	<div class="panelBar" style="display:none;">
+		<div class="pages">
+			<span>显示</span>
+			<select class="combox" name="numPerPage" onchange="navTabPageBreak({numPerPage:this.value})">
+				<option value="20">20</option>
+				<option value="50">50</option>
+				<option value="100">100</option>
+				<option value="200">200</option>
+			</select>
+			<span>条，共${totalCount}条</span>
+		</div>
+
+		<div class="pagination" targetType="navTab" totalCount="200" numPerPage="20" pageNumShown="10" currentPage="1"></div>
+
+	</div>
+</div>
