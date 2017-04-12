@@ -1,4 +1,4 @@
-<form id="pagerForm" method="post" action="/Index/Order/purchase">
+<form id="pagerForm" method="post" action="/Index/storehouse/index">
 <!--	
 	<input type="hidden" name="status" value="${param.status}">
 	<input type="hidden" name="keywords" value="${param.keywords}" />
@@ -48,7 +48,7 @@
 <div class="pageContent">
 	<div class="panelBar">
 		<ul class="toolBar">
-			<li><a class="add" href="/index/Order/add" target="navTab"><span>添加</span></a></li>
+			<li><a class="add" href="/index/storehouse/add" target="dialog"><span>Add</span></a></li>
 		<!--	
 			<li><a class="delete" href="demo/common/ajaxDone.html?uid={sid_user}" target="ajaxTodo" title="确定要删除吗?"><span>删除</span></a></li>
 			<li><a class="edit" href="demo_page4.html?uid={sid_user}" target="navTab"><span>修改</span></a></li>
@@ -60,36 +60,20 @@
 	<table class="table" width="100%" layoutH="138">
 		<thead>
 			<tr>
-				<th width="120">订单号</th>
-				<th>订单总额(rmb)</th>
-				<th>订单总额(php)</th>
-				<th>已付金额(rmb)</th>
-				<th>已付金额(php)</th>
-				<th>生成时间</th>
-				<th>状态</th>
+				<th width="120">仓库名称</th>
+				<th width="120">联系电话</th>
+				<th>仓库地址</th>
 				<th>操作</th>
 			</tr>
 		</thead>
 		<tbody>
 			{volist name="result" id="vo"}
 			<tr target="sid_user">
-				<td>{$vo.order_No}</td>
-				<td>{$vo.rmb_amount}</td>
-				<td>{$vo.php_amount}</td>
-				<td>{$vo.rmb_paid_amount}</td>
-				<td>{$vo.php_paid_amount}</td>
-				<td><?php echo date('Y-m-d H:i:s',$vo['create_time']);?></td>
-				<td>
-				{switch name="$vo['status']" }
-				    {case value="0"}正常{/case}
-				    {case value="1"}已取消{/case}
-				    {default /}已完成
-				{/switch}
-				</td>
-				<td>
-					<a href="/Index/order/show?id={$vo.id}" target="navTab"><span>查看</span></a>
-					<a href="/Index/seller/del?uid={$vo.id}" target="ajaxTodo" title="确定要删除吗?"><span>取消</span></a>
-				</td>
+				<td>{$vo.name}</td>
+				<td>{$vo.tel}</td>
+				<td>{$vo.address}</td>
+				<td><a href="/Index/storehouse/del?uid={$vo.id}" target="ajaxTodo" title="确定要删除吗?"><span>删除</span></a>
+				<a href="/Index/storehouse/edit?uid={$vo.id}" target="dialog"><span>修改</span></a></td>
 			</tr>
 			{/volist}	
 		</tbody>

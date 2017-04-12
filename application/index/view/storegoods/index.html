@@ -1,0 +1,231 @@
+<!--
+<form id="pagerForm" method="post" action="/Index/order/purchaseGoodsAdd">
+	
+	<input type="hidden" name="status" value="${param.status}">
+	<input type="hidden" name="keywords" value="${param.keywords}" />
+	<input type="hidden" name="pageNum" value="1" />
+	<input type="hidden" name="numPerPage" value="${model.numPerPage}" />
+	<input type="hidden" name="orderField" value="${param.orderField}" />
+
+
+	<input type="hidden" name="pageNum" value="1" />
+	<input type="hidden" name="numPerPage" value="1" />
+</form>
+-->
+
+<div class="pageHeader">
+	<form onsubmit="return navTabSearch(this);" action="demo_page1.html" method="post">
+	<div class="searchBar">
+		
+		<table class="searchContent">
+			<tr>
+				<td>
+				订单编号:<input type="text" name="order1.order_No" readonly value="0"/>
+				<input type="hidden" class="order_id" name="order1.order_id" readonly value="0"/>
+				
+				<a class="btnLook" href="/index/storegoods/order" lookupGroup="order1">查找带回</a></td>
+				</td>
+				<td>
+					订单总额(RMB):<input type="text" name="order1.rmb" readonly value="0.00" style="width:32px;"/>
+				</td>
+				<td>
+					订单总额(PHP)：<input type="text" name="order1.php" readonly="true"  value="0.00" style="width:32px;"/>
+				</td>
+				<td>
+					已付总额(RMB):<input type="text" name="order1.pay_rmb" readonly value="0.00" style="width:32px;"/>
+				</td>
+				<td>
+					已付总额(PHP)：<input type="text" name="order1.pay_php" readonly="true" value="0.00" style="width:32px;"/>
+				</td>
+				<td>
+					输入汇率：<input type="text" name="change_rate"  value="0.00" style="width:32px;"/>
+				</td>				
+			<!--	
+				<td>
+					订单时间：<input type="text" name="order1.time" readonly="true" style="width:82px;"/>
+				</td>
+			-->
+				<td><button type="button" class="load_order">载入</button></td>									
+			</tr>
+		</table>
+		<hr>
+		<table class="searchContent">
+			<tr>
+				<td>
+				商品编号:<input type="text" name="goods[0].goods_No" readonly value="0"/>
+				<input type="hidden" name="goods[0].goods_id">
+				<input type="hidden" name="goods[0].sid">
+				<input type="hidden" name="goods[0].type"/><input type="hidden" name="goods[0].show_type" readonly/>
+				<input type="hidden" name="goods[0].price" class="number" value="0.00" style="width:40px;"/><input type="hidden" readonly name="goods[0].tiny" style="width:32px;">
+				<input type="hidden" name="goods[0].num" class="number" value="0" style="width:32px;"/><input type="hidden" readonly name="goods[0].big" style="width:32px;">
+				<input type="hidden" name="goods[0].switch_num" class="number" value="0" readonly/>
+				<input type="hidden" name="goods[0].seller" value="0" readonly/>			
+				<a class="btnLook" href="/index/Order/purchaseGoodsAdd" lookupGroup="goods[0]">查找带回</a></td>
+				</td>
+				<td>
+				商品名:					
+				<input type="text" name="goods[0].name" readonly style="width:100px;"/>	
+				</td>
+				<td><button type="button" class="load_order_goods">确认</button></td>									
+			</tr>
+		</table>	
+	</div>
+	</form>
+</div>
+<form  class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone);"  method="post" action="/Index/storegoods/add">
+<div class="pageContent" style="overflow: auto; width: 100%;">
+	<div class="panelBar">
+		<ul class="toolBar">
+		<li><a href="javascript:void(0;)"><button type="submit">提交订单</button></a></li>		
+		<!--	
+			<li><a class="delete" href="demo/common/ajaxDone.html?uid={sid_user}" target="ajaxTodo" title="确定要删除吗?"><span>删除</span></a></li>
+			<li><a class="edit" href="demo_page4.html?uid={sid_user}" target="navTab"><span>修改</span></a></li>
+			<li class="line">line</li>
+			<li><a class="icon" href="demo/common/dwz-team.xls" target="dwzExport" targetType="navTab" title="实要导出这些记录吗?"><span>导出EXCEL</span></a></li>
+		-->
+		</ul>
+	</div>
+	<table class="table" width="100%" layoutH="138">
+		<thead>
+			<tr>
+				<th style="width:15%;"><center>商品编号</center></th>
+				<th><center>采购商品</center></th>
+				<th><center>采购价(小)</center></th>
+				<th><center>销售价</center></th>
+				<th><center>特价</center></th>
+				<th><center>入库数量</center></th>
+				<th><center>供应商</center></th>
+				<th><center>仓库</center></th>
+				<th><center>区域</center></th>
+				<th><center>操作</center></th>
+			</tr>
+			
+			<tr class="bottom_div" style="display:none;"><td colspan="8"></td></tr>
+
+	</table>
+
+	<div class="panelBar" style="display:none;">
+		<div class="pages">
+
+			<span>共{$total}条</span>
+		</div>
+
+		<div class="pagination" targetType="navTab" totalCount="{$total}" numPerPage="<?php echo PAGEPERNUM;?>" pageNumShown="10" currentPage="{$nowpage}"></div>
+
+	</div>
+</div>
+</form>
+<script>
+var i=0;
+$(function(){
+	$(".load_order").click(function(){
+		va=$("input[name='order1.order_id']").val()
+		if('0'==va||'undefined'==va){
+			return;
+		}
+		$.getJSON('/index/storegoods/order_detail',{"id":va},function(json){
+			if('1'==json.status)
+			{
+				a=json.data;
+				for(var j = 0;j < a.length; j++) {
+					chan_i(a[j],i);
+					i++;
+				}
+				//i=0;	
+			}		
+		})
+	})
+	$(".load_order_goods").click(function(){
+		va=$("input[name='goods[0].goods_id']").val()
+		if('0'==va||'undefined'==va){
+			return;
+		}
+		c_type=parseInt($("input[name='goods[0].type']").val());
+		vper_fee='0.00';
+		k=i;
+		str='<tr target="sid_user" class="sort_'+k+'">'
+					+'<td style="width:15%;">'
+					+'<input type="hidden" name="goods_id['+k+']" value="'+$("input[name='goods[0].goods_id']").val()+'">'
+					+'<input type="hidden" name="sid['+k+']" value="'+parseInt($("input[name='goods[0].sid']").val())+'">'+	
+					'<input type="hidden" name="order_id['+k+']" readonly value="0"/>'+
+					'<input type="hidden" name="switch_num['+k+']" readonly value="'+$("input[name='goods[0].switch_num']").val()+'"/>'+
+					'<input type="text" name="goods_No['+k+']" readonly value="'+$("input[name='goods[0].goods_No']").val()+'"/>'+
+					'</td>'+
+					'<td ><input type="text" name="name['+k+']" readonly value="'+$("input[name='goods[0].name']").val()+'"/></td>'+
+					'<td>₱<input type="text" name="price['+k+']" class="number" value="'+vper_fee+'" style="width:40px;"/><span>/'+$("input[name='goods[0].tiny']").val()+'</span></td>'+
+					'<td>₱<input type="text" name="price1['+k+']" class="number" value="'+vper_fee+'" style="width:40px;"/><span>/'+$("input[name='goods[0].tiny']").val()+'</span></td>'+
+					'<td>₱<input type="text" name="price2['+k+']" class="number" value="'+vper_fee+'" style="width:40px;"/><span>/'+$("input[name='goods[0].tiny']").val()+'</span></td>'+								
+					'<td><input type="text" name="num['+k+']" class="number"  value="0" style="width:40px;"/><span>'+$("input[name='goods[0].tiny']").val()+'</span></td>'+										
+					'<td><input type="text" name="seller['+k+']"  readonly  value="'+$("input[name='goods[0].seller']").val()+'"/></td>'+
+					'<td><select name="store['+k+']" onchange="store_zone('+k+',this)"><option value="">--option--</optoin>'+store_list+'</select></td>'+
+					'<td><select name="store_zone['+k+']" class="store_zone_'+k+'"></select></td>'+
+					'<td><a href="javascript:void(0);" onclick="rem('+k+')"><span>移除</span></a>'+
+					'</td>'+
+				'</tr>';
+				//console.log(str);return;
+		$(".bottom_div").after(str);
+		i++;		
+	})			
+})
+var store_list='{$store_result}';
+function chan_i(g_obj,k){
+	c_type=parseInt(g_obj.currency_type);
+	if(1==c_type){
+
+	}else{
+		g_obj.per_fee=parseFloat(g_obj.per_fee*parseFloat($("input[name='change_rate']").val()));
+	}
+	str='<tr target="sid_user" class="sort_'+k+'">'
+				+'<td style="width:15%;">'
+				+'<input type="hidden" name="goods_id['+k+']" value="'+g_obj.goods_id+'">'
+				+'<input type="hidden" name="sid['+k+']" value="'+parseInt(g_obj.seller_id)+'">'+	
+				'<input type="hidden" name="order_id['+k+']" readonly value="'+g_obj.order_id+'"/>'+
+				'<input type="hidden" name="switch_num['+k+']" readonly value="'+g_obj.spec+'"/>'+
+				'<input type="text" name="goods_No['+k+']" readonly value="'+g_obj.goods_No+'"/>'+
+				'</td>'+
+				'<td ><input type="text" name="name['+k+']" readonly value="'+g_obj.bname+'"/></td>'+
+				'<td>₱<input type="text" name="price['+k+']" class="number" value="'+g_obj.per_fee+'" style="width:40px;"/><span>/'+g_obj.tiny+'</span></td>'+
+				'<td>₱<input type="text" name="price1['+k+']" class="number" value="'+g_obj.per_fee+'" style="width:40px;"/><span>/'+g_obj.tiny+'</span></td>'+
+				'<td>₱<input type="text" name="price2['+k+']" class="number" value="'+g_obj.per_fee+'" style="width:40px;"/><span>/'+g_obj.tiny+'</span></td>'+								
+				'<td><input type="text" name="num['+k+']" class="number"  value="'+(g_obj.num*g_obj.spec)+'" style="width:40px;"/><span>'+g_obj.tiny+'</span></td>'+										
+				'<td><input type="text" name="seller['+k+']"  readonly  value="'+g_obj.sname+'"/></td>'+
+				'<td><select name="store['+k+']" onchange="store_zone('+k+',this)"><option value="">--option--</optoin>'+store_list+'</select></td>'+
+				'<td><select name="store_zone['+k+']" class="store_zone_'+k+'"></select></td>'+
+				'<td><a href="javascript:void(0);" onclick="rem('+k+')"><span>移除</span></a>'+
+				'</td>'+
+			'</tr>';
+			//console.log(str);return;
+	$(".bottom_div").after(str);		
+}
+function rem(r){
+	$(".sort_"+r).remove();
+}
+function store_zone(ik,_this){
+	va=$(_this).val()
+	if('0'==va||'undefined'==va){
+		return;
+	}
+	$.getJSON('/index/storegoods/store_zone',{"id":va},function(json){
+		if('1'==json.status)
+		{
+			a=json.data;
+			str='';
+			for(var j = 0;j < a.length; j++) {
+				str +="<option value='"+a[j].id+"'>"+a[j].name+"</option>"
+			}
+			//console.log(str)
+			$('.store_zone_'+ik).html(str)
+				
+		}		
+	})	
+}
+
+function switch_money_type(_this){
+	
+	if(0==parseInt($(_this).val())){
+		$(_this).next('b').html('RMB');
+	}else{
+		$(_this).next('b').html('PHP');
+	}
+}
+</script>

@@ -1,0 +1,49 @@
+
+<div class="pageContent">
+	<form method="post" action="/Index/storehouse/edit" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone);">
+		<div class="pageFormContent" layoutH="56">
+
+			<p>
+				<label>供应商名(name(ch))：</label>
+				<input name="name" class="required" type="text" size="30" value="{$seller.name}" alt=""/>
+				<input type="hidden" name="id" value="{$seller.id}">
+			</p>			
+			<p>
+				<label>电话(tel)：</label>
+				<input name="tel"  type="text" size="30" value="{$seller.tel}" alt=""/>	
+			</p>
+			<p>
+				<label>地址(address)：</label>
+				<input name="address" type="text" size="30" value="{$seller.address}" alt=""/>
+			</p>
+			<p>
+				<label>&nbsp;&nbsp;</label>
+				<input type="button" size="30" value="+Add Zone" onclick="zone_ad();"/>
+			</p>
+			{volist name="zone" id="vo"}
+			<p class="z_j{$vo.id}"><label>Zone Name:</label><input type="text" size="30" name="zone[]" value="{$vo.name}"/><a href="javascript:void(0);" onclick="demov('j{$vo.id}')">&nbsp;&nbsp;Remove</a></p>		
+			{/volist}
+			<p class="e_end"></p>							
+		</div>	
+		<div class="formBar">
+			<ul>
+				<!--<li><a class="buttonActive" href="javascript:;"><span>保存</span></a></li>-->
+				<li><div class="buttonActive"><div class="buttonContent"><button type="submit">保存</button></div></div></li>
+				<li>
+					<div class="button"><div class="buttonContent"><button type="button" class="close">取消</button></div></div>
+				</li>
+			</ul>
+		</div>
+	</form>
+</div>
+<script>
+var i=0;
+function zone_ad(){
+	i++;
+	str='<p class="z_'+i+'"><label>Zone Name:</label><input type="text" size="30" name="zone[]" value=""/><a href="javascript:void(0);" onclick="demov('+i+')">&nbsp;&nbsp;Remove</a></p>'
+	$(".e_end").before(str);
+}
+function demov(k){
+	$(".z_"+k).remove();
+}
+</script>

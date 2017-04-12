@@ -93,10 +93,11 @@ class Order extends \app\index\controller\Common
                     Db::startTrans();
                     try{
                         $order_id=Db::name('purchase_order')->insert($order_info);
+                        $last_Id = Db::name('purchase_order')->getLastInsID();
                         //b.订单商品
                         foreach ($goods_data as $key => $value) {
                             if($value){
-                                $goods_data[$key]['order_id']=$order_id;
+                                $goods_data[$key]['order_id']=$last_Id;
                             }
                         }
                         Db::name('purchase_order_goods')->insertAll($goods_data);
@@ -104,7 +105,7 @@ class Order extends \app\index\controller\Common
                         $seller_info=array();
                         foreach ($order_php_amount_seller as $key => $value) {
                             $seller_info[]=array(
-                                'order_id'=>$order_id,
+                                'order_id'=>$last_Id,
                                 'seller_id'=>$key,
                                 'php_order_amount'=>$value,
                                 'rmb_order_amount'=>$order_rmb_amount_seller[$key]
