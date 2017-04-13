@@ -1,0 +1,124 @@
+<!--
+<form id="pagerForm" method="post" action="/Index/order/purchaseGoodsAdd">
+	
+	<input type="hidden" name="status" value="${param.status}">
+	<input type="hidden" name="keywords" value="${param.keywords}" />
+	<input type="hidden" name="pageNum" value="1" />
+	<input type="hidden" name="numPerPage" value="${model.numPerPage}" />
+	<input type="hidden" name="orderField" value="${param.orderField}" />
+
+
+	<input type="hidden" name="pageNum" value="1" />
+	<input type="hidden" name="numPerPage" value="1" />
+</form>
+-->
+
+<div class="pageHeader">
+	<div class="searchBar">
+		
+		<table class="searchContent">
+			<tr>
+
+				<td>
+
+				</td>
+
+			</tr>
+		</table>
+
+	
+	</div>
+
+</div>
+
+<form  class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone);"  method="post" action="/Index/outorder/add">
+<div class="pageContent" style="overflow: auto; width: 100%;">
+	<div class="panelBar">
+		<ul class="toolBar">					
+		<li><select class="combox" name="customer">
+			{volist name="cust_result" id="vo"}
+			<option value="{$vo.id}">客户:{$vo.name}</option>
+			{/volist}
+			</select>
+		</li>	
+		<li><a href="javascript:void(0);"><button type="submit">提交订单</button></a></li>		
+		<!--	
+			<li><a class="delete" href="demo/common/ajaxDone.html?uid={sid_user}" target="ajaxTodo" title="确定要删除吗?"><span>删除</span></a></li>
+			<li><a class="edit" href="demo_page4.html?uid={sid_user}" target="navTab"><span>修改</span></a></li>
+			<li class="line">line</li>
+			<li><a class="icon" href="demo/common/dwz-team.xls" target="dwzExport" targetType="navTab" title="实要导出这些记录吗?"><span>导出EXCEL</span></a></li>
+		-->
+		</ul>
+	</div>
+	<table class="table" width="100%" layoutH="138">
+		<tr>
+			<th style="width:15%;"><center>商品编号</center></th>
+			<th><center>商品名</center></th>
+			<th><center>售价</center></th>
+			<th><center>数量</center></th>
+			<th><center>仓库</center></th>
+			<th><center>操作</center></th>
+		</tr>
+		<tr>
+			<td>
+			<input type="hidden" name="goods[0].goods_id">
+			<input type="hidden" name="goods[0].store_id">
+			<input type="hidden" name="goods[0].num">	
+			<input type="hidden" name="goods[0].zone_id" readonly/>
+			<input type="hidden" name="goods[0].store_goods_id" readonly/>
+			<input type="text" name="goods[0].goods_No" readonly/>
+			<a class="btnLook" href="/index/outorder/purchaseGoodsAdd" lookupGroup="goods[0]">查找带回</a></td>
+			<td><input type="text" name="goods[0].name" readonly style="width:100px;"/></td>
+			<td>₱<input type="text" name="goods[0].sell_price"/></td>
+			<td><input type="text" name="goods[0].num1" class="number" value="0" style="width:40px;"/><span style="color:red;"><=<input type="text" name="goods[0].num" class="number" value="0" style="width:40px;" readonly/></span></td>
+			<td><input type="text" name="goods[0].store"  value="0"/></td>
+			<td><a href="javascript:void(0)" onclick="chan_i()"><span>确定选择</span></a>
+			</td>
+		</tr>
+		<tr><td colspan="6"><hr></td></tr>
+		<tr class="bottom_div" style="display:none;"><td colspan="6"></td></tr>
+
+	</table>
+
+	<div class="panelBar" style="display:none;">
+		<div class="pages">
+
+			<span>共{$total}条</span>
+		</div>
+
+		<div class="pagination" targetType="navTab" totalCount="{$total}" numPerPage="<?php echo PAGEPERNUM;?>" pageNumShown="10" currentPage="{$nowpage}"></div>
+
+	</div>
+</div>
+</form>
+<script>
+var i=0;
+$(function(){
+
+})
+function chan_i(){
+	i++
+	str='<tr target="sid_user" class="sort_'+i+'">'
+				+'<td>'
+				+'<input type="hidden" name="store_goods_id['+i+']" value="'+$("input[name='goods[0].store_goods_id']").val()+'">'
+				+'<input type="hidden" name="goods_id['+i+']" value="'+$("input[name='goods[0].goods_id']").val()+'">'
+				+'<input type="hidden" name="store_id['+i+']" value="'+parseInt($("input[name='goods[0].store_id']").val())+'">'+	
+				'<input type="hidden" name="zone_id['+i+']" readonly value="'+$("input[name='goods[0].zone_id']").val()+'"/>'+
+				'<input type="hidden" name="before_num['+i+']" readonly value="'+$("input[name='goods[0].num']").val()+'"/>'+
+				'<input type="text" name="goods_No['+i+']" readonly value="'+$("input[name='goods[0].goods_No']").val()+'"/>'+
+				'</td>'+
+				'<td><input type="text" name="name['+i+']" readonly value="'+$("input[name='goods[0].name']").val()+'"/></td>'+
+				'<td>₱<input type="text" name="sell_price['+i+']" readonly value="'+$("input[name='goods[0].sell_price']").val()+'"/></td>'+
+				'<td><input type="text" name="num1['+i+']" class="number" value="'+$("input[name='goods[0].num1']").val()+'" style="width:40px;"/><span style="color:red;"><='+$("input[name='goods[0].num']").val()+'</span></td>'+
+				'<td><input type="text" name="store['+i+']" value="'+$("input[name='goods[0].store']").val()+'"/></td>'+
+				'<td><a href="javascript:void(0);" onclick="rem('+i+')"><span>移除</span></a>'+
+				'</td>'+
+			'</tr>';
+			//console.log(str);return;
+	$(".bottom_div").after(str);		
+}
+function rem(r){
+	$(".sort_"+r).remove();
+}
+
+</script>

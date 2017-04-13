@@ -1,0 +1,80 @@
+<form id="pagerForm" method="post" action="demo_page1.html">
+	<input type="hidden" name="status" value="${param.status}">
+	<input type="hidden" name="keywords" value="${param.keywords}" />
+	<input type="hidden" name="pageNum" value="1" />
+	<input type="hidden" name="numPerPage" value="${model.numPerPage}" />
+	<input type="hidden" name="orderField" value="${param.orderField}" />
+</form>
+
+
+<div class="pageHeader">
+	<form onsubmit="return navTabSearch(this);" action="demo_page1.html" method="post">
+	<div class="searchBar">
+		<!--<ul class="searchContent">
+			<li>
+				<label>我的客户：</label>
+				<input type="text"/>
+			</li>
+			<li>
+			<select class="combox" name="province">
+				<option value="">所有省市</option>
+				<option value="北京">北京</option>
+				<option value="上海">上海</option>
+				<option value="天津">天津</option>
+				<option value="重庆">重庆</option>
+				<option value="广东">广东</option>
+			</select>
+			</li>
+		</ul>
+		-->
+		<table class="searchContent">
+			<tr>
+				<td>
+					订单编号：<input type="text" value="{$order.order_No}" readonly/>
+				</td>
+				<td>
+					生成时间：<input type="text" value="<?php echo date('Y-m-d H:i:s',$order['create_time']);?>" readonly/>
+				</td>
+
+			</tr>
+		</table>
+	</div>
+	</form>
+</div>
+<div class="pageContent">
+	<table class="table" width="100%" layoutH="138">
+		<tbody>
+			<tr target="sid_user" rel="1">
+				<td>商品编号</td>
+				<td>商品名</td>
+				<td>单价</td>
+				<td>数量</td>
+				<td>仓库</td>
+			</tr>
+			{volist name="order_goods" id="vo"}
+			<tr target="sid_user">
+				<td>{$vo.goods_No}</td>
+				<td>{$vo.name}</td>
+				<td>{$vo.fee}</td>
+				<td>{$vo.num}</td>
+				<td>{$vo.sname}-{$vo.zname}</td>
+			</tr>
+			{/volist}		
+		</tbody>
+	</table>
+	<div class="panelBar" style="display:none;">
+		<div class="pages">
+			<span>显示</span>
+			<select class="combox" name="numPerPage" onchange="navTabPageBreak({numPerPage:this.value})">
+				<option value="20">20</option>
+				<option value="50">50</option>
+				<option value="100">100</option>
+				<option value="200">200</option>
+			</select>
+			<span>条，共${totalCount}条</span>
+		</div>
+
+		<div class="pagination" targetType="navTab" totalCount="200" numPerPage="20" pageNumShown="10" currentPage="1"></div>
+
+	</div>
+</div>
